@@ -21,23 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // === Database Connection ===
-$host = getenv('MYSQLHOST') ?: "localhost";
-$user = getenv('MYSQLUSER') ?: "root";
-$pass = getenv('MYSQLPASSWORD') ?: "";
-$db   = getenv('MYSQLDATABASE') ?: "db_perpus_1";
-$port = getenv('MYSQLPORT') ?: 3306;
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db   = "db_perpus_1";
 
-try {
-    $koneksi = mysqli_connect($host, $user, $pass, $db, $port);
-} catch (Throwable $e) {
-    http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . $e->getMessage()]);
-    exit();
-}
+$koneksi = mysqli_connect($host, $user, $pass, $db);
 
 if (!$koneksi) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . mysqli_connect_error()]);
+    echo json_encode(["status" => "error", "message" => "Koneksi database gagal"]);
     exit();
 }
 
@@ -158,9 +151,21 @@ function requireStaff($koneksi, $id_user) {
 }
 
 function getBaseUrl() {
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+    $protocol = "http://";
+    if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+        (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
+        $protocol = "https://";
+    }
     $host = $_SERVER['HTTP_HOST'];
-    $basePath = dirname(dirname($_SERVER['PHP_SELF']));
-    return $protocol . $host . $basePath;
+
+    // Get the directory of the current script (e.g., /api)
+    $currentDir = dirname($_SERVER['SCRIPT_NAME']);
+    // Get the parent directory (the root of the project)
+    $parentDir = dirname($currentDir);
+
+    // Clean up slashes
+    $parentDir = ($parentDir === DIRECTORY_SEPARATOR || $parentDir === '\\') ? '' : $parentDir;
+
+    return $protocol . $host . $parentDir;
 }
 ?>
