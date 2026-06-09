@@ -7,8 +7,8 @@ $port = getenv('MYSQLPORT') ?: 3306;
 
 try {
     $koneksi = mysqli_connect($host, $user, $pass, $db, $port);
-} catch (Exception $e) {
-    die("Koneksi gagal: " . $e->getMessage());
+} catch (Throwable $e) {
+    die("Koneksi gagal atau Error: " . $e->getMessage());
 }
 
 if (!$koneksi) {
