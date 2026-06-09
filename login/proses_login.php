@@ -23,11 +23,11 @@ if (isset($_POST['login'])) {
         // Redirect berdasarkan role
         if ($data['role'] == "admin") {
             header("location: ../admin/dashboard.php");
-        } elseif ($data['role'] == "akademik") {
+        } elseif ($data['role'] == "akademik" || $data['role'] == "karyawan") {
             // Arahkan ke folder akademik
             header("location: ../akademik/akademik_dashboard.php");
         } else {
-            // Mahasiswa, Dosen, atau Karyawan ke user view
+            // Mahasiswa atau Dosen ke user view
             header("location: ../views/users_dashboard.php");
         }
         exit;

@@ -3,7 +3,7 @@ session_start();
 include '../config/koneksi.php';
 
 // Proteksi Halaman: Hanya user dengan role akademik yang bisa akses halaman ini
-if (!isset($_SESSION['status']) || $_SESSION['status'] != "login" || $_SESSION['role'] != "akademik") {
+if (!isset($_SESSION['status']) || $_SESSION['status'] != "login" || !in_array($_SESSION['role'], ["akademik", "karyawan"])) {
     header("location: ../login/login.php?pesan=belum_login");
     exit;
 }
