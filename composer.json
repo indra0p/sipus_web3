@@ -2,7 +2,6 @@
   "name": "indra0p/sipus_web3",
   "description": "Sistem Informasi Perpustakaan",
   "require": {
-    "php": ">=7.4",
     "ext-mysqli": "*"
   }
 }
