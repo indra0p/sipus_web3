@@ -40,11 +40,31 @@ if ($action === 'current') {
 } elseif ($action === 'current_visitors') {
     // Staff only
     $role = requireStaff($koneksi, $id_user);
-    $q = mysqli_query($koneksi, "SELECT DISTINCT cl.id_user, u.nama, u.username, u.role, MIN(cl.waktu_checkin) as waktu_masuk FROM checkin_log cl JOIN users u ON cl.id_user = u.id WHERE DATE(cl.waktu_checkin) = '$tgl_hari_ini' AND cl.tipe = 'checkin' AND cl.id_user NOT IN (SELECT id_user FROM checkin_log WHERE DATE(waktu_checkin) = '$tgl_hari_ini' AND tipe = 'checkout') GROUP BY cl.id_user");
+
+    // Logika diperbaiki: Ambil user yang waktu check-in terakhirnya > waktu check-out terakhirnya hari ini
+    $sql = "SELECT u.id as id_user, u.nama, u.username, u.role,
+            MAX(CASE WHEN cl.tipe = 'checkin' THEN cl.waktu_checkin END) as last_in,
+            MAX(CASE WHEN cl.tipe = 'checkout' THEN cl.waktu_checkin END) as last_out
+            FROM checkin_log cl
+            JOIN users u ON cl.id_user = u.id
+            WHERE DATE(cl.waktu_checkin) = '$tgl_hari_ini'
+            GROUP BY cl.id_user
+            HAVING last_in IS NOT NULL AND (last_out IS NULL OR last_in > last_out)";
+
+    $q = mysqli_query($koneksi, $sql);
     $visitors = [];
     while ($r = mysqli_fetch_assoc($q)) {
-        $masuk = new DateTime($r['waktu_masuk']); $now = new DateTime(); $dur = $now->diff($masuk);
-        $visitors[] = ["id_user"=>(int)$r['id_user'],"nama"=>$r['nama'],"username"=>$r['username'],"role"=>$r['role'],"waktu_masuk"=>$r['waktu_masuk'],"durasi"=>$dur->h." jam ".$dur->i." menit"];
+        $masuk = new DateTime($r['last_in']);
+        $now = new DateTime();
+        $dur = $now->diff($masuk);
+        $visitors[] = [
+            "id_user" => (int)$r['id_user'],
+            "nama" => $r['nama'],
+            "username" => $r['username'],
+            "role" => $r['role'],
+            "waktu_masuk" => $r['last_in'],
+            "durasi" => $dur->h." jam ".$dur->i." menit"
+        ];
     }
     $q_cin = mysqli_query($koneksi, "SELECT COUNT(*) as t FROM checkin_log WHERE DATE(waktu_checkin) = '$tgl_hari_ini' AND tipe = 'checkin'");
     $q_cout = mysqli_query($koneksi, "SELECT COUNT(*) as t FROM checkin_log WHERE DATE(waktu_checkin) = '$tgl_hari_ini' AND tipe = 'checkout'");
