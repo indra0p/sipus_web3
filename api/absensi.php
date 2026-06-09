@@ -44,7 +44,10 @@ if (mysqli_num_rows($query) > 0) {
     )");
     
     // Ensure tipe column exists (for existing tables)
-    mysqli_query($koneksi, "ALTER TABLE checkin_log ADD COLUMN IF NOT EXISTS tipe ENUM('checkin','checkout') DEFAULT 'checkin' AFTER metode");
+    $check_column = mysqli_query($koneksi, "SHOW COLUMNS FROM checkin_log LIKE 'tipe'");
+    if (mysqli_num_rows($check_column) == 0) {
+        mysqli_query($koneksi, "ALTER TABLE checkin_log ADD COLUMN tipe ENUM('checkin','checkout') DEFAULT 'checkin' AFTER metode");
+    }
     
     $checkin_user_id = $user_data['id'];
     $waktu = date('Y-m-d H:i:s');
