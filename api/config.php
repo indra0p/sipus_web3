@@ -171,4 +171,6 @@ function getBaseUrl() {
 
     return $protocol . $host . $parentDir;
 }
+
+date_default_timezone_set('Asia/Jakarta');
 ?>
