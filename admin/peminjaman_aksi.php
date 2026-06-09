@@ -74,7 +74,21 @@ try {
         }
     }
 
-    // 3. KEMBALIKAN
+    // 3. REJECT
+    elseif ($aksi == 'reject') {
+        $id = mysqli_real_escape_string($koneksi, $_GET['id']);
+        $data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT status FROM peminjaman WHERE id_peminjaman = '$id' FOR UPDATE"));
+
+        if ($data && $data['status'] == 'Menunggu') {
+            mysqli_query($koneksi, "UPDATE peminjaman SET status = 'Ditolak' WHERE id_peminjaman = '$id'");
+            mysqli_commit($koneksi);
+            header("location: peminjaman.php?pesan=reject_berhasil");
+        } else {
+            throw new Exception("Peminjaman tidak ditemukan atau sudah diproses.");
+        }
+    }
+
+    // 4. KEMBALIKAN
     elseif ($aksi == 'kembalikan') {
         $id = mysqli_real_escape_string($koneksi, $_GET['id']);
         $data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT id_buku, status FROM peminjaman WHERE id_peminjaman = '$id'"));
