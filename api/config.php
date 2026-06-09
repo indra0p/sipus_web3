@@ -29,7 +29,7 @@ $port = getenv('MYSQLPORT') ?: 3306;
 
 try {
     $koneksi = mysqli_connect($host, $user, $pass, $db, $port);
-} catch (Exception $e) {
+} catch (Throwable $e) {
     http_response_code(500);
     echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . $e->getMessage()]);
     exit();
