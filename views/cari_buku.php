@@ -31,7 +31,11 @@ if (isset($_POST['cari'])) {
 } else {
     $sql = "SELECT * FROM buku WHERE (file_ebook IS NULL OR file_ebook = '') ORDER BY judul ASC";
 }
-$query = mysqli_query($koneksi, $sql);
+try {
+    $query = mysqli_query($koneksi, $sql);
+} catch (Throwable $e) {
+    die("Kesalahan Query Database: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">

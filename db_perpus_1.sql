@@ -36,7 +36,8 @@ CREATE TABLE `buku` (
   `jenis_buku` varchar(50) DEFAULT NULL,
   `sinopsis` text DEFAULT NULL,
   `stok` int(11) DEFAULT 0,
-  `sampul` varchar(255) DEFAULT NULL
+  `sampul` varchar(255) DEFAULT NULL,
+  `file_ebook` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
