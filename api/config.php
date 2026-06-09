@@ -25,13 +25,19 @@ $host = getenv('MYSQLHOST') ?: "localhost";
 $user = getenv('MYSQLUSER') ?: "root";
 $pass = getenv('MYSQLPASSWORD') ?: "";
 $db   = getenv('MYSQLDATABASE') ?: "db_perpus_1";
-$port = getenv('MYSQLPORT') ?: "3306";
+$port = getenv('MYSQLPORT') ?: 3306;
 
-$koneksi = mysqli_connect($host, $user, $pass, $db, $port);
+try {
+    $koneksi = mysqli_connect($host, $user, $pass, $db, $port);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . $e->getMessage()]);
+    exit();
+}
 
 if (!$koneksi) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Koneksi database gagal"]);
+    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . mysqli_connect_error()]);
     exit();
 }
 
