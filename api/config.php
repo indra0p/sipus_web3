@@ -21,17 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // === Database Connection ===
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "db_perpus_1";
+$host = getenv('MYSQLHOST') ?: "localhost";
+$user = getenv('MYSQLUSER') ?: "root";
+$pass = getenv('MYSQLPASSWORD') ?: "";
+$db   = getenv('MYSQLDATABASE') ?: "db_perpus2";
+$port = getenv('MYSQLPORT') ?: 3306;
 
-$koneksi = mysqli_connect($host, $user, $pass, $db);
+try {
+    $koneksi = mysqli_connect($host, $user, $pass, $db, $port);
+} catch (Throwable $e) {
+    die("Koneksi gagal atau Error: " . $e->getMessage());
+}
 
 if (!$koneksi) {
-    http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Koneksi database gagal"]);
-    exit();
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
 
 // === Response Helpers ===
