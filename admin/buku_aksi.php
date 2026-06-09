@@ -17,6 +17,7 @@ if($aksi == "tambah"){
     // Proses Upload Gambar
     $rand = rand();
     $filename = $_FILES['sampul']['name'];
+    $filename = str_replace(' ', '_', $filename);
 
     if($filename == ""){
         $query = "INSERT INTO buku (judul, pengarang, penerbit, jenis_buku, sinopsis, stok, barcode) 
@@ -51,6 +52,7 @@ if($aksi == "tambah"){
     $stok      = mysqli_real_escape_string($koneksi, $_POST['stok']);
     
     $filename = $_FILES['sampul']['name'];
+    $filename = str_replace(' ', '_', $filename);
 
     if($filename == ""){
         $query = "UPDATE buku SET judul='$judul', pengarang='$pengarang', penerbit='$penerbit', 

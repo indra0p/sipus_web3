@@ -91,7 +91,10 @@ $foto_user  = $data_user['foto'] ?? '';
         <div class="detail-container">
             <div class="detail-card">
                 <div class="cover-section">
-                    <?php $sampul = !empty($buku['sampul']) ? "../assets/img/sampul/" . $buku['sampul'] : "../assets/img/no-cover.jpg"; ?>
+                    <?php 
+                        $sampul_path = "../assets/img/sampul/" . $buku['sampul'];
+                        $sampul = (!empty($buku['sampul']) && file_exists($sampul_path)) ? str_replace(' ', '%20', $sampul_path) : "https://ui-avatars.com/api/?name=Cover+Buku&background=cbd5e1&color=334155&size=512"; 
+                    ?>
                     <img src="<?php echo $sampul; ?>" alt="Cover" class="detail-cover">
                     
                     <div class="detail-stock-badge <?php echo ($buku['stok'] <= 0) ? 'out' : ''; ?>">

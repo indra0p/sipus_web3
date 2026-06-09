@@ -122,7 +122,8 @@ try {
             <?php 
             if (mysqli_num_rows($query) > 0) {
                 while($row = mysqli_fetch_assoc($query)) : 
-                    $sampul = !empty($row['sampul']) ? "../assets/img/sampul/" . $row['sampul'] : "../assets/img/no-cover.jpg";
+                    $sampul_path = "../assets/img/sampul/" . $row['sampul'];
+                    $sampul = (!empty($row['sampul']) && file_exists($sampul_path)) ? str_replace(' ', '%20', $sampul_path) : "https://ui-avatars.com/api/?name=Cover+Buku&background=cbd5e1&color=334155&size=512";
                     $stok = $row['stok'] ?? 0; 
                     $outOfStockClass = ($stok <= 0) ? 'book-out-of-stock' : '';
             ?>
