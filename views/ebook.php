@@ -141,8 +141,7 @@ try {
                         Lihat Detail
                     </a>
                     
-                    <a href="../assets/docs/ebook/<?php echo $row['file_ebook']; ?>" 
-                       target="_blank"
+                    <a href="baca_ebook.php?id=<?php echo $row['id_buku']; ?>" 
                        style="display: block; margin-top: 8px; text-align: center; background: #10b981; color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold;">
                         <i class="fa-solid fa-book-open-reader"></i> Baca Sekarang
                     </a>

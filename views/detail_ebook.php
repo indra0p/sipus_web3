@@ -155,7 +155,7 @@ $foto_user  = $data_user['foto'] ?? '';
                             <i class="fa-solid fa-arrow-left"></i> Kembali ke E-Book
                         </a>
 
-                        <a href="../assets/docs/ebook/<?php echo $buku['file_ebook']; ?>" target="_blank" class="btn-read-now">
+                        <a href="baca_ebook.php?id=<?php echo $buku['id_buku']; ?>" class="btn-read-now">
                             <i class="fa-solid fa-file-pdf" style="font-size: 16px;"></i> Baca Sekarang
                         </a>
                     </div>
