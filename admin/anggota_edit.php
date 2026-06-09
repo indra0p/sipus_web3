@@ -42,6 +42,16 @@ $d = mysqli_fetch_array($query);
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <label>Role / Hak Akses</label>
+                    <select name="role">
+                        <option value="admin" <?php echo ($d['role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
+                        <option value="mahasiswa" <?php echo ($d['role'] == 'mahasiswa') ? 'selected' : ''; ?>>Mahasiswa</option>
+                        <option value="dosen" <?php echo ($d['role'] == 'dosen') ? 'selected' : ''; ?>>Dosen</option>
+                        <option value="karyawan" <?php echo ($d['role'] == 'karyawan') ? 'selected' : ''; ?>>Karyawan</option>
+                    </select>
+                </div>
+
                 <div class="btn-group">
                     <button type="submit" class="btn-save">Simpan Perubahan</button>
                     <a href="anggota.php" class="btn-back">Kembali</a>

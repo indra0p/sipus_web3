@@ -53,6 +53,7 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
                 <div style="margin-bottom: 15px;">
                     <label>Role</label>
                     <select name="role" style="width: 100%; padding: 8px; margin-top: 5px;">
+                        <option value="admin">Admin</option>
                         <option value="mahasiswa">Mahasiswa</option>
                         <option value="dosen">Dosen</option>
                         <option value="karyawan">Karyawan</option>
