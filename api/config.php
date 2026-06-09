@@ -21,12 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // === Database Connection ===
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "db_perpus_1";
+$host = getenv('MYSQLHOST') ?: "localhost";
+$user = getenv('MYSQLUSER') ?: "root";
+$pass = getenv('MYSQLPASSWORD') ?: "";
+$db   = getenv('MYSQLDATABASE') ?: "db_perpus_1";
+$port = getenv('MYSQLPORT') ?: "3306";
 
-$koneksi = mysqli_connect($host, $user, $pass, $db);
+$koneksi = mysqli_connect($host, $user, $pass, $db, $port);
 
 if (!$koneksi) {
     http_response_code(500);
